@@ -1,6 +1,6 @@
 #ifndef ASD2_1_DYNAMICARRAY_H
 #define ASD2_1_DYNAMICARRAY_H
-#endif //ASD2_1_DYNAMICARRAY_H
+
 
 #include "include.h"
 #include "structure.h"
@@ -16,7 +16,7 @@ struct DynamicArray{
     }
     ~DynamicArray()
     {
-        delete[] array;
+        clear();
     }
 
     void Realloc(int new_size){
@@ -108,15 +108,16 @@ struct DynamicArray{
         cursor++;
     }
 
-    bool pop_front() {
+    President pop_front() {
         if(empty())
-            return false;
+            return President();
 
+        President temp = array[0];
         for(int i = 0; i < cursor; i++) {
             array[i] = array[i + 1];
         }
         cursor--;
-        return true;
+        return temp;
     }
 
 };
@@ -150,7 +151,7 @@ struct LinkedList
         return head == nullptr;
     }
 
-    void push_front(President &object)
+    void push_front(President object)
     {
         if(head == nullptr)
         {
@@ -168,7 +169,7 @@ struct LinkedList
         n_size++;
     }
 
-    void push_back(President &object)
+    void push_back(President object)
     {
         if(tail == nullptr)
         {
@@ -187,7 +188,7 @@ struct LinkedList
 
     President get(int index) const
     {
-        if(index <= 0)
+        if(index < 0)
             throw out_of_range("Index is out of range");
 
         Node* cur = head;
@@ -202,7 +203,7 @@ struct LinkedList
     President pop_front()
     {
         Node* copy = head;
-        delete head;
+        head->~Node();
         head = copy->next_item;
         n_size--;
         return copy->data;
@@ -211,17 +212,17 @@ struct LinkedList
     President pop_back()
     {
         Node* cur = head;
-        for(int i = 0; i < n_size - 1; i++)
+        while(cur->next_item->next_item != nullptr)
         {
             cur = cur->next_item;
         }
-        delete tail;
+        Node* n_cur = tail;
+        tail->~Node();
         tail = cur;
 
-        Node* _cur = cur->next_item;
-        delete cur->next_item;
+        tail->next_item->~Node();
         n_size--;
-        return _cur->data;
+        return n_cur->data;
     }
 
     int size() const
@@ -262,3 +263,4 @@ struct LinkedList
 
 
 };
+#endif //ASD2_1_DYNAMICARRAY_H

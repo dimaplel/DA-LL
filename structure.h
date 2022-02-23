@@ -1,6 +1,6 @@
 #ifndef ASD2_1_STRUCTURE_H
 #define ASD2_1_STRUCTURE_H
-#endif //ASD2_1_STRUCTURE_H
+
 
 #include <iostream>
 using namespace std;
@@ -11,7 +11,7 @@ struct President
     float term;
     int palace_area;
 
-    President(char i_name = '.', float i_term = 0, int i_palaceArea = 0)
+    President(char i_name = 'A', float i_term = 0, int i_palaceArea = 0)
     {
         name = i_name;
         term = i_term;
@@ -26,3 +26,4 @@ struct President
         cout << "Name: " << name << "; In service for: " << term << " years; Palace area: " << palace_area <<"\n";
     }
 };
+#endif //ASD2_1_STRUCTURE_H

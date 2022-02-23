@@ -1,6 +1,6 @@
 #include "DynamicArray.h"
 
-void vector_time(DynamicArray& vector)
+void vector_time(LinkedList& vector)
 {
     clock_t start_time = clock();
     for(int i = 0; i <= 50000; i++)
@@ -23,7 +23,7 @@ void vector_time(DynamicArray& vector)
     start_time = clock();
     for(int i = 0; i <= 2000;i++)
     {
-        vector.get(rand() % (6000 - 1));
+        vector.get(rand() % 5999 + 0);
     }
     end_time = clock();
     time = (double(end_time - start_time)) / CLOCKS_PER_SEC;
@@ -50,7 +50,7 @@ void vector_time(DynamicArray& vector)
 
 int main() {
     srand(time(NULL));
-    DynamicArray data;
+    LinkedList data;
     vector_time(data);
     return 0;
 }
