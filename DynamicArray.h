@@ -1,123 +1,62 @@
 #ifndef ASD2_1_DYNAMICARRAY_H
 #define ASD2_1_DYNAMICARRAY_H
-#endif //ASD2_1_DYNAMICARRAY_H
 
-#include "include.h"
-#include "structure.h"
+#include <ctime>
+#include <cstdlib>
+#include <iostream>
+
+#define ARRAY_SIZE 2
+
+using namespace std;
+
+struct President
+{
+    char name;
+    float term;
+    int palace_area;
+
+    President(char i_name = '.', float i_term = 0, int i_palaceArea = 0);
+    ~President() = default;
+
+    void print() const;
+};
 
 struct DynamicArray{
     President *array;
-    int cursor = 0;
-    int cur_size = ARRAY_SIZE;
+    int _size = 0;
+    int capacity = ARRAY_SIZE;
 
-    DynamicArray()
-    {
-        array = new President[ARRAY_SIZE];
-    }
-    ~DynamicArray()
-    {
-        delete[] array;
-    }
+    DynamicArray();
+    ~DynamicArray();
 
-    void Realloc(int new_size){
-        auto* new_array = new President[new_size];
+    void Realloc(int new_size);
 
-        if(new_size < cur_size)
-            cur_size = new_size;
+    void push_back(const President& object);
 
-        for(int i = 0; i < cursor; i++)
-            new_array[i] = array[i];
+    President pop_back();
 
-        delete[] array;
-        array = new_array;
-        cur_size = new_size;
-    }
+    // President вернёт копию объекта (лишнее копирование, как по мне)
+    // можешь вернуть const President& чтобы нельзя было менять данные в массиве или же
+    // можешь вернуть President&, если не против, чтобы с помощью get() можно было менять данные в массиве
+    const President& get(int index) const;
 
-    bool empty() const
-    {
-        return cursor == 0;
-    }
+    // Все инициализированные функции (те что имеют тело) в хедере неявно обозначаются как inline.
+    // Это значит, что компилятор будет быстрее вызывать эти функции, но при этом
+    // время компиляции и размер исходника будет больше
 
-    void push_back(const President& object)
-    {
-        if(cursor == cur_size)
-            Realloc(cur_size * 2);
+    // inline лучше обозначать маленькие функции, например эту
+    // noexcept тоже по дефолту ставится и говорит о том, что в функции нет throw и она не может
+    // прервать программу в runtime
+    inline int size() const noexcept {return _size;}
 
-        array[cursor] = object;
-        cursor++;
-    }
+    void print() const;
 
-    President pop_back()
-    {
-        if(empty())
-            return President();
+    bool clear();
 
-        cursor--;
-        President copy = array[cursor];
-        array[cursor].~President();
-        return copy;
-    }
+    void push_front(const President& object);
 
-    President get(int index) const
-    {
-        if(index < 0 || index > cur_size)
-            throw out_of_range("Index is out of range");
-
-        return array[index];
-    }
-
-    int size() const
-    {
-    if(empty())
-        return 0;
-    return cursor;
-    }
-
-    void print() const
-    {
-        if(empty()) cout << "\nArray is empty!";
-        else
-        {
-            for(int i = 0; i < cursor; i++)
-            {
-                array[i].print();
-            }
-        }
-    }
-
-    bool clear()
-    {
-        if(empty())
-            return false;
-
-        cursor = 0;
-        cur_size = 1;
-        delete[] array;
-        return true;
-    }
-
-    void push_front(const President& object)
-    {
-        if(cursor >= cur_size - 1)
-            Realloc(cur_size * 2);
-
-        for(int i = cur_size; i > 0; i--)
-            array[i] = array[i-1];
-
-        array[0] = object;
-        cursor++;
-    }
-
-    bool pop_front() {
-        if(empty())
-            return false;
-
-        for(int i = 0; i < cursor; i++) {
-            array[i] = array[i + 1];
-        }
-        cursor--;
-        return true;
-    }
+    // ты не возвращаешь копию
+    President pop_front();
 
 };
 
@@ -224,10 +163,7 @@ struct LinkedList
         return _cur->data;
     }
 
-    int size() const
-    {
-        return n_size;
-    }
+    inline int size() const noexcept { return n_size; }
 
     void print() const
     {
@@ -262,3 +198,5 @@ struct LinkedList
 
 
 };
+
+#endif //ASD2_1_DYNAMICARRAY_H

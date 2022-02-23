@@ -21,9 +21,9 @@ void vector_time(DynamicArray& vector)
     cout << "Time for second step: " << time << "\n";
 
     start_time = clock();
-    for(int i = 0; i <= 2000;i++)
+    for(int i = 0; i <= 20000;i++)
     {
-        vector.get(rand() % (6000 - 1));
+        vector.get(rand() % 32768);
     }
     end_time = clock();
     time = (double(end_time - start_time)) / CLOCKS_PER_SEC;
