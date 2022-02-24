@@ -106,10 +106,5 @@ int main() {
     vector_time(data);
     printf("\n");
     list_time(list);
-
-    for(int i = 0; i < 15; i++)
-    {
-        list.push_back(President());
-    }
     return 0;
 }
